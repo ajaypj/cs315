@@ -1,0 +1,77 @@
+{% extends "layout.html" %}
+
+{% block content1 %}
+{% if 'appointments_edit1' in request.url %}
+<div style='margin-left: 100px; width: 45%;'>
+  <div class="alert alert-info" role="alert">
+   <strong>Your turn!</strong> Edit your selected data line here ...
+ </div>
+
+ {% for eresult in eresults %}
+<form action = "appointments_edit2" method = "POST">
+	<p>Doctor Id<input class="form-control" type = "text" name = "doctor_id" style='width: 100%;' value='{{eresult["doctor_id"]}}' required /></p>
+	<p>Patient Id<input class="form-control" type = "text" name = "patient_id" style='width: 100%;' value='{{eresult["patient_id"]}}' required /></p>
+	<p>Date<input class="form-control" type = "date" name = "date" style='width: 100%;' value='{{eresult["date"]}}'
+	 required /></p>
+	<p>Time<input class="form-control" type = "time" name = "time" style='width: 100%;' value='{{eresult["time"]}}'
+		required /></p>
+	<p>Description<input class="form-control" type = "text" name = "description" style='width: 100%;' value='{{eresult["description"]}}' maxlength="100" required /></p>
+	<p><input type = "hidden" name = "old_doctor_id" value='{{eresult["doctor_id"]}}' /></p>
+	<p><input type = "hidden" name = "old_patient_id" value='{{eresult["patient_id"]}}' /></p>
+	<p><input type = "hidden" name = "old_date" value='{{eresult["date"]}}' /></p>
+	<p><input type = "hidden" name = "old_time" value='{{eresult["time"]}}' /></p>
+{% endfor %}
+
+   <br>
+
+   <p><input class="btn-primary" type = "submit" value = "Update Data" /></p>
+ </form>
+</div>
+
+{% else %}
+<div style='margin-left: 100px; width: 45%;'>
+  <div class="alert alert-info" role="alert">
+    <strong>Your turn!</strong> Insert your new data line with this form ...
+  </div>
+
+  <form action = "appointments_insert" method = "POST">
+	<p>Doctor Id: <input class="form-control" type = "text" name = "doctor_id" style='width: 100%;' required /></p>
+	<p>Patient Id: <input class="form-control" type = "text" name = "patient_id" style='width: 100%;' required /></p>
+	<p>Date: <input class="form-control" type = "date" name = "date" style='width: 100%;' required /></p>
+	<p>Time: <input class="form-control" type = "time" name = "time" style='width: 100%;' required /></p>
+	<p>Description: <input class="form-control" type = "text" name = "description" style='width: 100%;'
+		maxlength="100" required /></p>
+	<p><input class="btn-primary" type = "submit" value = "Insert Data" /></p>
+</form>
+</div>
+
+
+{% endif %}
+{% endblock content1 %}
+
+{% block content2 %}
+
+<table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+ <thead>
+  <tr>
+	<th>Doctor Id</th>
+	<th>Patient Id</th>
+	<th>Date</th>
+	<th>Time</th>
+	<th>Description</th>
+</tr>
+</thead>
+
+{% for result in results %}
+<tr>
+<td>{{result["doctor_id"]}}</td>
+<td>{{result["patient_id"]}}</td>
+<td>{{result["date"]}}</td>
+<td>{{result["time"]}}</td>
+<td>{{result["description"]}}</td>
+<td align="center"><a href = "{{ url_for('appointments_edit1', doctor_id=result['doctor_id'], patient_id=result['patient_id'], date=result['date'], time=result['time'])}}"><i class="fas fa-edit"></a></td>
+   <td align="center"><a href = "{{ url_for('appointments_delete', doctor_id=result['doctor_id'], patient_id=result['patient_id'], date=result['date'], time=result['time'])}}"><i class="fas fa-trash-alt"></a></td>
+   </tr>
+   {% endfor %}
+ </table>
+ {% endblock content2 %}

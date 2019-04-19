@@ -1,0 +1,77 @@
+{% extends "layout.html" %}
+
+{% block content1 %}
+{% if 'insurance_edit1' in request.url %}
+<div style='margin-left: 100px; width: 45%;'>
+  <div class="alert alert-info" role="alert">
+   <strong>Your turn!</strong> Edit your selected data line here ...
+ </div>
+
+ {% for eresult in eresults %}
+<form action = "insurance_edit2" method = "POST">
+	<p>Insurance Id<input class="form-control" type = "text" name = "insurance_id" style='width: 100%;' value='{{eresult["insurance_id"]}}' required /></p>
+	<p>Name<input class="form-control" type = "text" name = "name" style='width: 100%;' value='{{eresult["name"]}}'
+		maxlength="20" required /></p>
+	<p>Company Name<input class="form-control" type = "text" name = "company_name" style='width: 100%;' value='{{eresult["company_name"]}}' maxlength="20" required /></p>
+	<p>Amount<input class="form-control" type = "text" name = "amount" style='width: 100%;' value='{{eresult["amount"]}}' required /></p>
+	<p>Receiver Id<input class="form-control" type = "text" name = "receiver_id" style='width: 100%;' value='{{eresult["receiver_id"]}}'  required /></p>
+	<p>Receiver Name<input class="form-control" type = "text" name = "receiver_name" style='width: 100%;' value='{{eresult["receiver_name"]}}' maxlength="30"  required /></p>
+	<p><input type = "hidden" name = "old_insurance_id" value='{{eresult["insurance_id"]}}' /></p>
+{% endfor %}
+
+   <br>
+
+   <p><input class="btn-primary" type = "submit" value = "Update Data" /></p>
+ </form>
+</div>
+
+{% else %}
+<div style='margin-left: 100px; width: 45%;'>
+  <div class="alert alert-info" role="alert">
+    <strong>Your turn!</strong> Insert your new data line with this form ...
+  </div>
+
+  <form action = "insurance_insert" method = "POST">
+	<p>Insurance Id: <input class="form-control" type = "text" name = "insurance_id" style='width: 100%;' required /></p>
+	<p>Name: <input class="form-control" type = "text" name = "name" style='width: 100%;' maxlength="20" required /></p>
+	<p>Company Name: <input class="form-control" type = "text" name = "company_name" style='width: 100%;'
+		maxlength="20" required /></p>
+	<p>Amount: <input class="form-control" type = "text" name = "amount" style='width: 100%;' required /></p>
+	<p>Receiver Id: <input class="form-control" type = "text" name = "receiver_id" style='width: 100%;' required /></p>
+	<p>Receiver Name: <input class="form-control" type = "text" name = "receiver_name" style='width: 100%;' maxlength="30" required  /></p>
+	<p><input class="btn-primary" type = "submit" value = "Insert Data" /></p>
+</form>
+</div>
+
+
+{% endif %}
+{% endblock content1 %}
+
+{% block content2 %}
+
+<table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+ <thead>
+  <tr>
+	<th>Insurance Id</th>
+	<th>Name</th>
+	<th>Company Name</th>
+	<th>Amount</th>
+	<th>Receiver Id</th>
+	<th>Receiver Name</th>
+</tr>
+</thead>
+
+{% for result in results %}
+<tr>
+<td>{{result["insurance_id"]}}</td>
+<td>{{result["name"]}}</td>
+<td>{{result["company_name"]}}</td>
+<td>{{result["amount"]}}</td>
+<td>{{result["receiver_id"]}}</td>
+<td>{{result["receiver_name"]}}</td>
+<td align="center"><a href = "{{ url_for('insurance_edit1', insurance_id=result['insurance_id'])}}"><i class="fas fa-edit"></a></td>
+   <td align="center"><a href = "{{ url_for('insurance_delete', insurance_id=result['insurance_id'])}}"><i class="fas fa-trash-alt"></a></td>
+   </tr>
+   {% endfor %}
+ </table>
+ {% endblock content2 %}

@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+
+{% block content1 %}
+{% if 'student_doc_edit1' in request.url %}
+<div style='margin-left: 100px; width: 45%;'>
+  <div class="alert alert-info" role="alert">
+   <strong>Your turn!</strong> Edit your selected data line here ...
+ </div>
+
+ {% for eresult in eresults %}
+<form action = "student_doc_edit2" method = "POST">
+	<p>Roll No<input class="form-control" type = "text" name = "roll_no" style='width: 100%;' value='{{eresult["roll_no"]}}' required /></p>
+	<p>Doctor Id<input class="form-control" type = "text" name = "doctor_id" style='width: 100%;' value='{{eresult["doctor_id"]}}' required /></p>
+	<p>Term<input class="form-control" type = "text" name = "term" style='width: 100%;' value='{{eresult["term"]}}'
+	 required /></p>
+	<p>Field<input class="form-control" type = "text" name = "field" style='width: 100%;' value='{{eresult["field"]}}'  maxlength="20" required /></p>
+	<p>Department Id<input class="form-control" type = "text" name = "dept_id" style='width: 100%;' value='{{eresult["dept_id"]}}' required /></p>
+	<p><input type = "hidden" name = "old_roll_no" value='{{eresult["roll_no"]}}' /></p>
+	<p><input type = "hidden" name = "old_doctor_id" value='{{eresult["doctor_id"]}}' /></p>
+{% endfor %}
+
+   <br>
+
+   <p><input class="btn-primary" type = "submit" value = "Update Data" /></p>
+ </form>
+</div>
+
+{% else %}
+<div style='margin-left: 100px; width: 45%;'>
+  <div class="alert alert-info" role="alert">
+    <strong>Your turn!</strong> Insert your new data line with this form ...
+  </div>
+
+  <form action = "student_doc_insert" method = "POST">
+	<p>Roll No: <input class="form-control" type = "text" name = "roll_no" style='width: 100%;' required /></p>
+	<p>Doctor Id: <input class="form-control" type = "text" name = "doctor_id" style='width: 100%;' required /></p>
+	<p>Term: <input class="form-control" type = "text" name = "term" style='width: 100%;' required /></p>
+	<p>Field: <input class="form-control" type = "text" name = "field" style='width: 100%;' maxlength="20" required /></p>
+	<p>Department Id: <input class="form-control" type = "text" name = "dept_id" style='width: 100%;' required /></p>
+	<p><input class="btn-primary" type = "submit" value = "Insert Data" /></p>
+</form>
+</div>
+
+
+{% endif %}
+{% endblock content1 %}
+
+{% block content2 %}
+
+<table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+ <thead>
+  <tr>
+	<th>Roll No</th>
+	<th>Doctor Id</th>
+	<th>Term</th>
+	<th>Field</th>
+	<th>Department Id</th>
+</tr>
+</thead>
+
+{% for result in results %}
+<tr>
+<td>{{result["roll_no"]}}</td>
+<td>{{result["doctor_id"]}}</td>
+<td>{{result["term"]}}</td>
+<td>{{result["field"]}}</td>
+<td>{{result["dept_id"]}}</td>
+<td align="center"><a href = "{{ url_for('student_doc_edit1', roll_no=result['roll_no'], doctor_id=result['doctor_id'])}}"><i class="fas fa-edit"></a></td>
+   <td align="center"><a href = "{{ url_for('student_doc_delete', roll_no=result['roll_no'], doctor_id=result['doctor_id'])}}"><i class="fas fa-trash-alt"></a></td>
+   </tr>
+   {% endfor %}
+ </table>
+ {% endblock content2 %}

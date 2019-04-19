@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+{% block content1 %}
+
+{% if current_user.is_authenticated %}
+<h1> Welcome to Hospital Management System </h1>
+<div>
+
+  <form action = "home_query" method = "POST">
+    <p>Enter Any Query<input class="form-control" type = "text" name = "query" style='width: 100%;' required /></p>
+
+    <p><input class="btn-primary" type = "submit" value = "Query" /></p>
+  </form>
+</div>
+{% else %}
+<h1> Welcome to Hospital Management System </h1>
+{% endif %}
+{% endblock content1 %}
+
+{% block content3 %}
+<h1> Welcome to Hospital Management System </h1>
+<br>
+<h2> Login to use the system </h2>
+{% endblock content3 %}
+
+{% block content2 %}
+<!-- {% if current_user.is_authenticated %} -->
+
+<table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+ <thead>
+  <tr>
+    {% for column in columns %}
+      <th>{{column}}</th>
+    {% endfor %}
+</tr>
+</thead>
+
+{% for row in rows %}
+<tr>
+{% for column in columns %}
+<td>{{row[column]}}</td>
+{% endfor %}
+</tr>
+{% endfor %}
+ </table>
+<!-- {% endif %} -->
+ {% endblock content2 %}

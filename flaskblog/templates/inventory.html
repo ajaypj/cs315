@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+
+{% block content1 %}
+{% if 'inventory_edit1' in request.url %}
+<div style='margin-left: 100px; width: 45%;'>
+  <div class="alert alert-info" role="alert">
+   <strong>Your turn!</strong> Edit your selected data line here ...
+ </div>
+
+ {% for eresult in eresults %}
+<form action = "inventory_edit2" method = "POST">
+	<p>Equipment Id<input class="form-control" type = "text" name = "equip_id" style='width: 100%;' value='{{eresult["equip_id"]}}' required /></p>
+	<p>Department Id<input class="form-control" type = "text" name = "dept_id" style='width: 100%;' value='{{eresult["dept_id"]}}' required /></p>
+	<p>Name<input class="form-control" type = "text" name = "name" style='width: 100%;' value='{{eresult["name"]}}'
+	maxlength="20"  required /></p>
+	<p>Quantity<input class="form-control" type = "text" name = "quantity" style='width: 100%;' value='{{eresult["quantity"]}}' required /></p>
+	<p><input type = "hidden" name = "old_equip_id" value='{{eresult["equip_id"]}}' /></p>
+	<p><input type = "hidden" name = "old_dept_id" value='{{eresult["dept_id"]}}' /></p>
+{% endfor %}
+
+   <br>
+
+   <p><input class="btn-primary" type = "submit" value = "Update Data" /></p>
+ </form>
+</div>
+
+{% else %}
+<div style='margin-left: 100px; width: 45%;'>
+  <div class="alert alert-info" role="alert">
+    <strong>Your turn!</strong> Insert your new data line with this form ...
+  </div>
+
+  <form action = "inventory_insert" method = "POST">
+	<p>Equipment Id: <input class="form-control" type = "text" name = "equip_id" style='width: 100%;'/></p>
+	<p>Department Id: <input class="form-control" type = "text" name = "dept_id" style='width: 100%;'/></p>
+	<p>Name: <input class="form-control" type = "text" name = "name" style='width: 100%;' maxlength="20"/></p>
+	<p>Quantity: <input class="form-control" type = "text" name = "quantity" style='width: 100%;'/></p>
+	<p><input class="btn-primary" type = "submit" value = "Insert Data" /></p>
+</form>
+</div>
+
+
+{% endif %}
+{% endblock content1 %}
+
+{% block content2 %}
+
+<table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+ <thead>
+  <tr>
+	<th>Equipment Id</th>
+	<th>Department Id</th>
+	<th>Name</th>
+	<th>Quantity</th>
+</tr>
+</thead>
+
+{% for result in results %}
+<tr>
+<td>{{result["equip_id"]}}</td>
+<td>{{result["dept_id"]}}</td>
+<td>{{result["name"]}}</td>
+<td>{{result["quantity"]}}</td>
+<td align="center"><a href = "{{ url_for('inventory_edit1', equip_id=result['equip_id'], dept_id=result['dept_id'])}}"><i class="fas fa-edit"></a></td>
+   <td align="center"><a href = "{{ url_for('inventory_delete', equip_id=result['equip_id'], dept_id=result['dept_id'])}}"><i class="fas fa-trash-alt"></a></td>
+   </tr>
+   {% endfor %}
+ </table>
+ {% endblock content2 %}

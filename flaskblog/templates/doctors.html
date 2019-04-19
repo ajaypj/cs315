@@ -1,0 +1,91 @@
+{% extends "layout.html" %}
+
+{% block content1 %}
+{% if 'doctors_edit1' in request.url %}
+<div style='margin-left: 100px; width: 45%;'>
+  <div class="alert alert-info" role="alert">
+   <strong>Your turn!</strong> Edit your selected data line here ...
+ </div>
+
+ {% for eresult in eresults %}
+<form action = "doctors_edit2" method = "POST">
+	<p>Doctor Id<input class="form-control" type = "text" name = "doctor_id" style='width: 100%;' value='{{eresult["doctor_id"]}}' required /></p>
+	<p>Name<input class="form-control" type = "text" name = "name" style='width: 100%;' value='{{eresult["name"]}}'
+	maxlength="30" required /></p>
+	<p>Sex  &nbsp <input type="radio" name="sex" value="1" checked> Male  &nbsp
+		<input type="radio" name="sex" value="0" > Female<br></p>
+	<p>Phone<input class="form-control" type = "text" name = "phone" style='width: 100%;' value='{{eresult["phone"]}}'
+		required /></p>
+	<p>DOB<input class="form-control" type = "date" name = "dob" style='width: 100%;' value='{{eresult["dob"]}}' required /></p>
+	<p>Degree<input class="form-control" type = "text" name = "degree" style='width: 100%;' value='{{eresult["degree"]}}' maxlength="20" required /></p>
+	<p>Address<input class="form-control" type = "text" name = "address" style='width: 100%;' value='{{eresult["address"]}}' maxlength="100" required /></p>
+	<p>Department Id<input class="form-control" type = "text" name = "dept_id" style='width: 100%;' value='{{eresult["dept_id"]}}' required /></p>
+	<p>Designation Id<input class="form-control" type = "text" name = "desg_id" style='width: 100%;' value='{{eresult["desg_id"]}}' required /></p>
+	<p><input type = "hidden" name = "old_doctor_id" value='{{eresult["doctor_id"]}}' /></p>
+{% endfor %}
+
+   <br>
+
+   <p><input class="btn-primary" type = "submit" value = "Update Data" /></p>
+ </form>
+</div>
+
+{% else %}
+<div style='margin-left: 100px; width: 45%;'>
+  <div class="alert alert-info" role="alert">
+    <strong>Your turn!</strong> Insert your new data line with this form ...
+  </div>
+
+  <form action = "doctors_insert" method = "POST">
+	<p>Doctor Id: <input class="form-control" type = "text" name = "doctor_id" style='width: 100%;' required /></p>
+	<p>Name: <input class="form-control" type = "text" name = "name" style='width: 100%;' maxlength="30" required /></p>
+	<p>Sex  &nbsp <input type="radio" name="sex" value="1" checked> Male  &nbsp
+		<input type="radio" name="sex" value="0" > Female<br></p>
+	<p>Phone: <input class="form-control" type = "text" name = "phone" style='width: 100%;' required /></p>
+	<p>DOB: <input class="form-control" type = "date" name = "dob" style='width: 100%;' required /></p>
+	<p>Degree: <input class="form-control" type = "text" name = "degree" style='width: 100%;' maxlength="20" required /></p>
+	<p>Address: <input class="form-control" type = "text" name = "address" style='width: 100%;' maxlength="100" required /></p>
+	<p>Department Id: <input class="form-control" type = "text" name = "dept_id" style='width: 100%;' required /></p>
+	<p>Designation Id: <input class="form-control" type = "text" name = "desg_id" style='width: 100%;' required /></p>
+	<p><input class="btn-primary" type = "submit" value = "Insert Data" /></p>
+</form>
+</div>
+
+
+{% endif %}
+{% endblock content1 %}
+
+{% block content2 %}
+
+<table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+ <thead>
+  <tr>
+	<th>Doctor Id</th>
+	<th>Name</th>
+	<th>Sex</th>
+	<th>Phone</th>
+	<th>DOB</th>
+	<th>Degree</th>
+	<th>Address</th>
+	<th>Department Id</th>
+	<th>Designation Id</th>
+</tr>
+</thead>
+
+{% for result in results %}
+<tr>
+<td>{{result["doctor_id"]}}</td>
+<td>{{result["name"]}}</td>
+<td>{{result["sex"]}}</td>
+<td>{{result["phone"]}}</td>
+<td>{{result["dob"]}}</td>
+<td>{{result["degree"]}}</td>
+<td>{{result["address"]}}</td>
+<td>{{result["dept_id"]}}</td>
+<td>{{result["desg_id"]}}</td>
+<td align="center"><a href = "{{ url_for('doctors_edit1', doctor_id=result['doctor_id'])}}"><i class="fas fa-edit"></a></td>
+   <td align="center"><a href = "{{ url_for('doctors_delete', doctor_id=result['doctor_id'])}}"><i class="fas fa-trash-alt"></a></td>
+   </tr>
+   {% endfor %}
+ </table>
+ {% endblock content2 %}

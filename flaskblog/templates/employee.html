@@ -1,0 +1,89 @@
+{% extends "layout.html" %}
+
+{% block content1 %}
+{% if 'employee_edit1' in request.url %}
+<div style='margin-left: 100px; width: 45%;'>
+  <div class="alert alert-info" role="alert">
+   <strong>Your turn!</strong> Edit your selected data line here ...
+ </div>
+
+ {% for eresult in eresults %}
+<form action = "employee_edit2" method = "POST">
+	<p>Employee Id<input class="form-control" type = "text" name = "emp_id" style='width: 100%;' value='{{eresult["emp_id"]}}'  required /></p>
+	<p>Name<input class="form-control" type = "text" name = "name" style='width: 100%;' value='{{eresult["name"]}}'
+	maxlength="30"  required /></p>
+	<p>Sex  &nbsp <input type="radio" name="sex" value="1" checked> Male  &nbsp
+		<input type="radio" name="sex" value="0" > Female<br></p>
+	<p>Phone<input class="form-control" type = "text" name = "phone" style='width: 100%;' value='{{eresult["phone"]}}'
+		required /></p>
+	<p>DOB<input class="form-control" type = "date" name = "dob" style='width: 100%;' value='{{eresult["dob"]}}'
+		required /></p>
+	<p>Address<input class="form-control" type = "text" name = "address" style='width: 100%;' value='{{eresult["address"]}}' maxlength="100" required /></p>
+	<p>Department Id<input class="form-control" type = "text" name = "dept_id" style='width: 100%;' value='{{eresult["dept_id"]}}' required /></p>
+	<p>Designation Id<input class="form-control" type = "text" name = "desg_id" style='width: 100%;' value='{{eresult["desg_id"]}}' required /></p>
+	<p><input type = "hidden" name = "old_emp_id" value='{{eresult["emp_id"]}}' /></p>
+{% endfor %}
+
+   <br>
+
+   <p><input class="btn-primary" type = "submit" value = "Update Data" /></p>
+ </form>
+</div>
+
+{% else %}
+<div style='margin-left: 100px; width: 45%;'>
+  <div class="alert alert-info" role="alert">
+    <strong>Your turn!</strong> Insert your new data line with this form ...
+  </div>
+
+  <form action = "employee_insert" method = "POST">
+	<p>Employee Id: <input class="form-control" type = "text" name = "emp_id" style='width: 100%;' required /></p>
+	<p>Name: <input class="form-control" type = "text" name = "name" style='width: 100%;' maxlength="30" required /></p>
+	<p>Sex  &nbsp <input type="radio" name="sex" value="1" checked> Male  &nbsp
+		<input type="radio" name="sex" value="0" > Female<br></p>
+	<p>Phone: <input class="form-control" type = "text" name = "phone" style='width: 100%;' required /></p>
+	<p>DOB: <input class="form-control" type = "date" name = "dob" style='width: 100%;' required /></p>
+	<p>Address: <input class="form-control" type = "text" name = "address" style='width: 100%;' maxlength="100"
+		required /></p>
+	<p>Department Id: <input class="form-control" type = "text" name = "dept_id" style='width: 100%;' required/></p>
+	<p>Designation Id: <input class="form-control" type = "text" name = "desg_id" style='width: 100%;' required/></p>
+	<p><input class="btn-primary" type = "submit" value = "Insert Data" /></p>
+</form>
+</div>
+
+
+{% endif %}
+{% endblock content1 %}
+
+{% block content2 %}
+
+<table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+ <thead>
+  <tr>
+	<th>Employee Id</th>
+	<th>Name</th>
+	<th>Sex</th>
+	<th>Phone</th>
+	<th>DOB</th>
+	<th>Address</th>
+	<th>Department Id</th>
+	<th>Designation Id</th>
+</tr>
+</thead>
+
+{% for result in results %}
+<tr>
+<td>{{result["emp_id"]}}</td>
+<td>{{result["name"]}}</td>
+<td>{{result["sex"]}}</td>
+<td>{{result["phone"]}}</td>
+<td>{{result["dob"]}}</td>
+<td>{{result["address"]}}</td>
+<td>{{result["dept_id"]}}</td>
+<td>{{result["desg_id"]}}</td>
+<td align="center"><a href = "{{ url_for('employee_edit1', emp_id=result['emp_id'])}}"><i class="fas fa-edit"></a></td>
+   <td align="center"><a href = "{{ url_for('employee_delete', emp_id=result['emp_id'])}}"><i class="fas fa-trash-alt"></a></td>
+   </tr>
+   {% endfor %}
+ </table>
+ {% endblock content2 %}

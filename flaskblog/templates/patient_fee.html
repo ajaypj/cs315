@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+
+{% block content1 %}
+{% if 'patient_fee_edit1' in request.url %}
+<div style='margin-left: 100px; width: 45%;'>
+  <div class="alert alert-info" role="alert">
+   <strong>Your turn!</strong> Edit your selected data line here ...
+ </div>
+
+ {% for eresult in eresults %}
+<form action = "patient_fee_edit2" method = "POST">
+	<p>Patient Id<input class="form-control" type = "text" name = "patient_id" style='width: 100%;' value='{{eresult["patient_id"]}}' required /></p>
+	<p>Amount Paid<input class="form-control" type = "text" name = "amount_paid" style='width: 100%;' value='{{eresult["amount_paid"]}}' required /></p>
+	<p>Amount Due<input class="form-control" type = "text" name = "amount_due" style='width: 100%;' value='{{eresult["amount_due"]}}' required /></p>
+	<p><input type = "hidden" name = "old_patient_id" value='{{eresult["patient_id"]}}' /></p>
+{% endfor %}
+
+   <br>
+
+   <p><input class="btn-primary" type = "submit" value = "Update Data" /></p>
+ </form>
+</div>
+
+{% else %}
+<div style='margin-left: 100px; width: 45%;'>
+  <div class="alert alert-info" role="alert">
+    <strong>Your turn!</strong> Insert your new data line with this form ...
+  </div>
+
+  <form action = "patient_fee_insert" method = "POST">
+	<p>Patient Id: <input class="form-control" type = "text" name = "patient_id" style='width: 100%;' required /></p>
+	<p>Amount Paid: <input class="form-control" type = "text" name = "amount_paid" style='width: 100%;' required /></p>
+	<p>Amount Due: <input class="form-control" type = "text" name = "amount_due" style='width: 100%;' required /></p>
+	<p><input class="btn-primary" type = "submit" value = "Insert Data" /></p>
+</form>
+</div>
+
+
+{% endif %}
+{% endblock content1 %}
+
+{% block content2 %}
+
+<table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+ <thead>
+  <tr>
+	<th>Patient Id</th>
+	<th>Amount Paid</th>
+	<th>Amount Due</th>
+</tr>
+</thead>
+
+{% for result in results %}
+<tr>
+<td>{{result["patient_id"]}}</td>
+<td>{{result["amount_paid"]}}</td>
+<td>{{result["amount_due"]}}</td>
+<td align="center"><a href = "{{ url_for('patient_fee_edit1', patient_id=result['patient_id'])}}"><i class="fas fa-edit"></a></td>
+   <td align="center"><a href = "{{ url_for('patient_fee_delete', patient_id=result['patient_id'])}}"><i class="fas fa-trash-alt"></a></td>
+   </tr>
+   {% endfor %}
+ </table>
+ {% endblock content2 %}

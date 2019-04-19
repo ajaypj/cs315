@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+
+{% block content1 %}
+{% if 'vendors_edit1' in request.url %}
+<div style='margin-left: 100px; width: 45%;'>
+  <div class="alert alert-info" role="alert">
+   <strong>Your turn!</strong> Edit your selected data line here ...
+ </div>
+
+ {% for eresult in eresults %}
+<form action = "vendors_edit2" method = "POST">
+	<p>Vendor Id<input class="form-control" type = "text" name = "vendor_id" style='width: 100%;' value='{{eresult["vendor_id"]}}' required /></p>
+	<p>Name<input class="form-control" type = "text" name = "name" style='width: 100%;' value='{{eresult["name"]}}'
+    maxlength="30" required /></p>
+	<p>Phone<input class="form-control" type = "text" name = "phone" style='width: 100%;' value='{{eresult["phone"]}}'
+    required /></p>
+	<p><input type = "hidden" name = "old_vendor_id" value='{{eresult["vendor_id"]}}' /></p>
+{% endfor %}
+
+   <br>
+
+   <p><input class="btn-primary" type = "submit" value = "Update Data" /></p>
+ </form>
+</div>
+
+{% else %}
+<div style='margin-left: 100px; width: 45%;'>
+  <div class="alert alert-info" role="alert">
+    <strong>Your turn!</strong> Insert your new data line with this form ...
+  </div>
+
+  <form action = "vendors_insert" method = "POST">
+	<p>Vendor Id: <input class="form-control" type = "text" name = "vendor_id" style='width: 100%;' required /></p>
+	<p>Name: <input class="form-control" type = "text" name = "name" style='width: 100%;' maxlength="30" required  /></p>
+	<p>Phone: <input class="form-control" type = "text" name = "phone" style='width: 100%;' required /></p>
+	<p><input class="btn-primary" type = "submit" value = "Insert Data" /></p>
+</form>
+</div>
+
+
+{% endif %}
+{% endblock content1 %}
+
+{% block content2 %}
+
+<table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+ <thead>
+  <tr>
+	<th>Vendor Id</th>
+	<th>Name</th>
+	<th>Phone</th>
+</tr>
+</thead>
+
+{% for result in results %}
+<tr>
+<td>{{result["vendor_id"]}}</td>
+<td>{{result["name"]}}</td>
+<td>{{result["phone"]}}</td>
+<td align="center"><a href = "{{ url_for('vendors_edit1', vendor_id=result['vendor_id'])}}"><i class="fas fa-edit"></a></td>
+   <td align="center"><a href = "{{ url_for('vendors_delete', vendor_id=result['vendor_id'])}}"><i class="fas fa-trash-alt"></a></td>
+   </tr>
+   {% endfor %}
+ </table>
+ {% endblock content2 %}

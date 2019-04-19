@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+
+{% block content1 %}
+{% if 'ambulances_edit1' in request.url %}
+<div style='margin-left: 100px; width: 45%;'>
+  <div class="alert alert-info" role="alert">
+   <strong>Your turn!</strong> Edit your selected data line here ...
+ </div>
+
+ {% for eresult in eresults %}
+<form action = "ambulances_edit2" method = "POST">
+	<p>Vehicle No<input class="form-control" type = "text" name = "vehicle_no" style='width: 100%;' value='{{eresult["vehicle_no"]}}' required /></p>
+	<p>Employee Id<input class="form-control" type = "text" name = "emp_id" style='width: 100%;' value='{{eresult["emp_id"]}}'  required /></p>
+	<p>Model Name<input class="form-control" type = "text" name = "model_name" style='width: 100%;' value='{{eresult["model_name"]}}' maxlength="20" required /></p>
+	<p>Type<input class="form-control" type = "text" name = "type" style='width: 100%;' value='{{eresult["type"]}}'
+		maxlength="20" required /></p>
+	<p><input type = "hidden" name = "old_vehicle_no" value='{{eresult["vehicle_no"]}}' /></p>
+	<p><input type = "hidden" name = "old_emp_id" value='{{eresult["emp_id"]}}' /></p>
+{% endfor %}
+
+   <br>
+
+   <p><input class="btn-primary" type = "submit" value = "Update Data" /></p>
+ </form>
+</div>
+
+{% else %}
+<div style='margin-left: 100px; width: 45%;'>
+  <div class="alert alert-info" role="alert">
+    <strong>Your turn!</strong> Insert your new data line with this form ...
+  </div>
+
+  <form action = "ambulances_insert" method = "POST">
+	<p>Vehicle No: <input class="form-control" type = "text" name = "vehicle_no" style='width: 100%;' required /></p>
+	<p>Employee Id: <input class="form-control" type = "text" name = "emp_id" style='width: 100%;' required /></p>
+	<p>Model Name: <input class="form-control" type = "text" name = "model_name" style='width: 100%;' maxlength="20"
+		required /></p>
+	<p>Type: <input class="form-control" type = "text" name = "type" style='width: 100%;' maxlength="20" required /></p>
+	<p><input class="btn-primary" type = "submit" value = "Insert Data" /></p>
+</form>
+</div>
+
+
+{% endif %}
+{% endblock content1 %}
+
+{% block content2 %}
+
+<table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+ <thead>
+  <tr>
+	<th>Vehicle No</th>
+	<th>Employee Id</th>
+	<th>Model Name</th>
+	<th>Type</th>
+</tr>
+</thead>
+
+{% for result in results %}
+<tr>
+<td>{{result["vehicle_no"]}}</td>
+<td>{{result["emp_id"]}}</td>
+<td>{{result["model_name"]}}</td>
+<td>{{result["type"]}}</td>
+<td align="center"><a href = "{{ url_for('ambulances_edit1', vehicle_no=result['vehicle_no'], emp_id=result['emp_id'])}}"><i class="fas fa-edit"></a></td>
+   <td align="center"><a href = "{{ url_for('ambulances_delete', vehicle_no=result['vehicle_no'], emp_id=result['emp_id'])}}"><i class="fas fa-trash-alt"></a></td>
+   </tr>
+   {% endfor %}
+ </table>
+ {% endblock content2 %}

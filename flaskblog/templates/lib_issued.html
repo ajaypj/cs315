@@ -1,0 +1,80 @@
+{% extends "layout.html" %}
+
+{% block content1 %}
+{% if 'lib_issued_edit1' in request.url %}
+<div style='margin-left: 100px; width: 45%;'>
+  <div class="alert alert-info" role="alert">
+   <strong>Your turn!</strong> Edit your selected data line here ...
+ </div>
+
+ {% for eresult in eresults %}
+<form action = "lib_issued_edit2" method = "POST">
+	<p>Issue Date<input class="form-control" type = "date" name = "issue_date" style='width: 100%;' value='{{eresult["issue_date"]}}' required /></p>
+	<p>Book Id<input class="form-control" type = "text" name = "book_id" style='width: 100%;' value='{{eresult["book_id"]}}' required /></p>
+	<p>Return Status<input class="form-control" type = "text" name = "return_status" style='width: 100%;' value='{{eresult["return_status"]}}' required /></p>
+	<p>Return Date<input class="form-control" type = "date" name = "return_date" style='width: 100%;' value='{{eresult["return_date"]}}' /></p>
+	<p>Doctor Id<input class="form-control" type = "text" name = "doctor_id" style='width: 100%;' value='{{eresult["doctor_id"]}}' /></p>
+	<p>Roll No<input class="form-control" type = "text" name = "roll_no" style='width: 100%;' value='{{eresult["roll_no"]}}' /></p>
+	<p>Employee Id<input class="form-control" type = "text" name = "emp_id" style='width: 100%;' value='{{eresult["emp_id"]}}' /></p>
+	<p><input type = "hidden" name = "old_issue_date" value='{{eresult["issue_date"]}}' /></p>
+	<p><input type = "hidden" name = "old_book_id" value='{{eresult["book_id"]}}' /></p>
+{% endfor %}
+
+   <br>
+
+   <p><input class="btn-primary" type = "submit" value = "Update Data" /></p>
+ </form>
+</div>
+
+{% else %}
+<div style='margin-left: 100px; width: 45%;'>
+  <div class="alert alert-info" role="alert">
+    <strong>Your turn!</strong> Insert your new data line with this form ...
+  </div>
+
+  <form action = "lib_issued_insert" method = "POST">
+	<p>Issue Date: <input class="form-control" type = "date" name = "issue_date" style='width: 100%;'/></p>
+	<p>Book Id: <input class="form-control" type = "text" name = "book_id" style='width: 100%;'/></p>
+	<p>Return Status: <input class="form-control" type = "text" name = "return_status" style='width: 100%;'/></p>
+	<p>Return Date: <input class="form-control" type = "date" name = "return_date" style='width: 100%;'/></p>
+	<p>Doctor Id: <input class="form-control" type = "text" name = "doctor_id" style='width: 100%;'/></p>
+	<p>Roll No: <input class="form-control" type = "text" name = "roll_no" style='width: 100%;'/></p>
+	<p>Employee Id: <input class="form-control" type = "text" name = "emp_id" style='width: 100%;'/></p>
+	<p><input class="btn-primary" type = "submit" value = "Insert Data" /></p>
+</form>
+</div>
+
+
+{% endif %}
+{% endblock content1 %}
+
+{% block content2 %}
+
+<table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+ <thead>
+  <tr>
+	<th>Issue Date</th>
+	<th>Book Id</th>
+	<th>Return Status</th>
+	<th>Return Date</th>
+	<th>Doctor Id</th>
+	<th>Roll No</th>
+	<th>Employee Id</th>
+</tr>
+</thead>
+
+{% for result in results %}
+<tr>
+<td>{{result["issue_date"]}}</td>
+<td>{{result["book_id"]}}</td>
+<td>{{result["return_status"]}}</td>
+<td>{{result["return_date"]}}</td>
+<td>{{result["doctor_id"]}}</td>
+<td>{{result["roll_no"]}}</td>
+<td>{{result["emp_id"]}}</td>
+<td align="center"><a href = "{{ url_for('lib_issued_edit1', issue_date=result['issue_date'], book_id=result['book_id'])}}"><i class="fas fa-edit"></a></td>
+   <td align="center"><a href = "{{ url_for('lib_issued_delete', issue_date=result['issue_date'], book_id=result['book_id'])}}"><i class="fas fa-trash-alt"></a></td>
+   </tr>
+   {% endfor %}
+ </table>
+ {% endblock content2 %}

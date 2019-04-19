@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+
+{% block content1 %}
+{% if 'price_list_edit1' in request.url %}
+<div style='margin-left: 100px; width: 45%;'>
+  <div class="alert alert-info" role="alert">
+   <strong>Your turn!</strong> Edit your selected data line here ...
+ </div>
+
+ {% for eresult in eresults %}
+<form action = "price_list_edit2" method = "POST">
+	<p>Price List Id<input class="form-control" type = "text" name = "price_list_id" style='width: 100%;' value='{{eresult["price_list_id"]}}'  required /></p>
+	<p>Category<input class="form-control" type = "text" name = "category" style='width: 100%;' value='{{eresult["category"]}}'  required /></p>
+	<p>Price<input class="form-control" type = "text" name = "price" style='width: 100%;' value='{{eresult["price"]}}'
+		required /></p>
+	<p>Description<input class="form-control" type = "text" name = "desc" style='width: 100%;' value='{{eresult["desc"]}}' maxlength="30" required /></p>
+	<p><input type = "hidden" name = "old_price_list_id" value='{{eresult["price_list_id"]}}' /></p>
+{% endfor %}
+
+   <br>
+
+   <p><input class="btn-primary" type = "submit" value = "Update Data" /></p>
+ </form>
+</div>
+
+{% else %}
+<div style='margin-left: 100px; width: 45%;'>
+  <div class="alert alert-info" role="alert">
+    <strong>Your turn!</strong> Insert your new data line with this form ...
+  </div>
+
+  <form action = "price_list_insert" method = "POST">
+	<p>Price List Id: <input class="form-control" type = "text" name = "price_list_id" style='width: 100%;' required /></p>
+	<p>Category: <input class="form-control" type = "text" name = "category" style='width: 100%;' required /></p>
+	<p>Price: <input class="form-control" type = "text" name = "price" style='width: 100%;' required /></p>
+	<p>Description: <input class="form-control" type = "text" name = "desc" style='width: 100%;'
+		maxlength="30" required /></p>
+	<p><input class="btn-primary" type = "submit" value = "Insert Data" /></p>
+</form>
+</div>
+
+
+{% endif %}
+{% endblock content1 %}
+
+{% block content2 %}
+
+<table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+ <thead>
+  <tr>
+	<th>Price List Id</th>
+	<th>Category</th>
+	<th>Price</th>
+	<th>Description</th>
+</tr>
+</thead>
+
+{% for result in results %}
+<tr>
+<td>{{result["price_list_id"]}}</td>
+<td>{{result["category"]}}</td>
+<td>{{result["price"]}}</td>
+<td>{{result["desc"]}}</td>
+<td align="center"><a href = "{{ url_for('price_list_edit1', price_list_id=result['price_list_id'])}}"><i class="fas fa-edit"></a></td>
+   <td align="center"><a href = "{{ url_for('price_list_delete', price_list_id=result['price_list_id'])}}"><i class="fas fa-trash-alt"></a></td>
+   </tr>
+   {% endfor %}
+ </table>
+ {% endblock content2 %}

@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+
+{% block content1 %}
+{% if 'transactions_edit1' in request.url %}
+<div style='margin-left: 100px; width: 45%;'>
+  <div class="alert alert-info" role="alert">
+   <strong>Your turn!</strong> Edit your selected data line here ...
+ </div>
+
+ {% for eresult in eresults %}
+<form action = "transactions_edit2" method = "POST">
+	<p>Price List Id<input class="form-control" type = "text" name = "price_list_id" style='width: 100%;' value='{{eresult["price_list_id"]}}' required /></p>
+	<p>Patient Id<input class="form-control" type = "text" name = "patient_id" style='width: 100%;' value='{{eresult["patient_id"]}}'  required /></p>
+	<p>Quantity<input class="form-control" type = "text" name = "quantity" style='width: 100%;' value='{{eresult["quantity"]}}' required /></p>
+	<p><input type = "hidden" name = "old_price_list_id" value='{{eresult["price_list_id"]}}' /></p>
+{% endfor %}
+
+   <br>
+
+   <p><input class="btn-primary" type = "submit" value = "Update Data" /></p>
+ </form>
+</div>
+
+{% else %}
+<div style='margin-left: 100px; width: 45%;'>
+  <div class="alert alert-info" role="alert">
+    <strong>Your turn!</strong> Insert your new data line with this form ...
+  </div>
+
+  <form action = "transactions_insert" method = "POST">
+	<p>Price List Id: <input class="form-control" type = "text" name = "price_list_id" style='width: 100%;' required /></p>
+	<p>Patient Id: <input class="form-control" type = "text" name = "patient_id" style='width: 100%;' required /></p>
+	<p>Quantity: <input class="form-control" type = "text" name = "quantity" style='width: 100%;' required /></p>
+	<p><input class="btn-primary" type = "submit" value = "Insert Data" /></p>
+</form>
+</div>
+
+
+{% endif %}
+{% endblock content1 %}
+
+{% block content2 %}
+
+<table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
+ <thead>
+  <tr>
+	<th>Price List Id</th>
+	<th>Patient Id</th>
+	<th>Quantity</th>
+</tr>
+</thead>
+
+{% for result in results %}
+<tr>
+<td>{{result["price_list_id"]}}</td>
+<td>{{result["patient_id"]}}</td>
+<td>{{result["quantity"]}}</td>
+<td align="center"><a href = "{{ url_for('transactions_edit1', price_list_id=result['price_list_id'])}}"><i class="fas fa-edit"></a></td>
+   <td align="center"><a href = "{{ url_for('transactions_delete', price_list_id=result['price_list_id'])}}"><i class="fas fa-trash-alt"></a></td>
+   </tr>
+   {% endfor %}
+ </table>
+ {% endblock content2 %}
